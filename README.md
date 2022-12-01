@@ -1281,3 +1281,444 @@ class Main {
 - Abstract Method
 
 Try to understand everything above and make programs
+
+## Intro to Objects
+
+Methods = anything you call an object or an instance of an object.
+
+```java
+String h = "hello";
+h.length(); // returns the length of the string
+	// length is a method
+```
+
+```java
+public class Main {
+	public static voif main(String[] args) {
+		Scanner scanner = Scanner(System.in);
+		//scanner.next();
+		String h = "hello";
+		h.length();
+
+		ian("Ian", 4); //prints Ian 4 times
+
+		System.out.println(add2(6)); // 8
+
+		System.out.println(str("hi")); // hi!
+	}
+
+// this is also called as a function or ** method **
+	public static void ian(String str, int x) { // void means that it won't return anything
+		// we need to pass some information for this method which is a string = argument
+
+		for(int i=0; i<x; i++) {
+			System.out.println(str); // print out 4 times
+		}
+
+
+	}
+
+// method to add2
+	public static int add2(int x) {
+		return x + 2;
+	}
+
+// method that adds an "!"
+	public static String str(String x) {
+		return x + "!";
+	}
+}
+```
+
+# Creating Classes
+
+You need to create a new file to make a new class. A Class is a data type that is a blue-print for an object.
+
+Method and Attributes dwell in a class - Attributes are variables within a class - Constructor build the model of a dog
+
+**Dog.java**
+
+```java
+public class Dog {
+	private String name; // private is only accessible to this class
+	private int age;
+
+	public Dog(String name, int age) {
+		this.name = name; // this is referencing the attributes of the class
+		this.age = age;
+		add2();
+		speak();
+	}
+
+// method for dog speaking
+	public void speak() {
+		System.out.println("I am " + this.name + " and I am " + this.age + " years old.");
+	}
+
+// getAge of Dog
+	public int getAge() {
+		return this.age;
+	}
+
+// setAge of Dog
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+// add2 of Dog
+	private int add2() { // this is not available in the Main class
+		return this.age + 2;
+	}
+}
+```
+
+**Main.java**
+
+```java
+public class Main {
+	public static void main(String[] args){
+		Dog ian = new Dog("Ian", 4); // this is an ** instance ** of the object Dog
+		ian.speak(); // I am Ian and I am 4 years old.
+	}
+}
+```
+
+# What does Static mean?
+
+Protected:  
+ Protected modifier specifies that the member can only be accessed within its own package (as with package-private) and, in addition, by a subclass of its class in another package.
+
+**Dog.java**
+
+```java
+public class Dog {
+	protected static int count = 0; // static variable allows to statically change the varible.
+
+	protected String name;
+	protected int age;
+
+	public Dog(String name, int age) {
+		this.name = name;
+		this.age = age;
+		Dog.count += 1; // keeps track of how many dogs are on count
+		Dog.display(); // prints out "I am a dog."
+		this.display2(); // this will give an error asking to be changed to static
+	}
+
+// static methods
+	public static void display() {
+		// we use static if we don't care about the instance or attributes.
+		System.out.println("I am a dog.");
+	}
+
+// making a method that isn't static
+	public void display2() {
+		System.out.println("I am a dog.");
+	}
+}
+```
+
+**Main.java**
+
+```java
+public class Main {
+	public static void main(String[] args){
+		Dog ian = new Dog("Ian", 4);
+		Dog bill = new Dog("Bill", 4);
+
+		System.out.println(Dog.count); // 2
+	}
+}
+```
+
+# Overloading Methods and Object Comparisons
+
+**Student.java**
+
+```java
+public class Student implements Comparable<Student> {
+	// set of methods to make the class	comparable
+	private String name;
+
+	public Student(String name) {
+		this.name = name;
+	}
+
+// method to compare objects
+	public boolean equals(Student other) {
+		if(this.name == other.name) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+// method to compare the names
+	public int compareTo(Student other) {
+		return this.name.compareTo(other.name);
+			// going to compare names
+	}
+
+// print out name of student
+	public String otString() P{
+		return "Student(" + this.name + ")";
+		// Java knows to print this without using toString()
+	}
+}
+```
+
+**Main.java**
+
+```java
+public class Main {
+	public static void main(String[] args){
+		Student joe = new Student("Joe");
+		Student ian = new Student("Ian");
+		Student bill = new Student("Bill");
+
+		System.out.println(joe == bill); // false
+			// joe and bill are separate objects in memory
+
+		System.out.println(joe.equals(bill)); // true if bill = "joe"
+
+		System.out.println(joe.compareTo(bill)); // 8
+		System.out.println(joe.compareTo(bill) > 0); // true b/c j is further in the alphabet
+		System.out.println(joe.compareTo(tim) > 0); // false b/c t is further in the alphabet
+		System.out.println(joe.compareTo(tim)); // -10
+		System.out.println(joe.compareTo(tim) < 0); // true
+
+		// what if we want to print out tim?
+		System.out.println(tim); // tutorial1.student@!5db9742 <- memory location of tim object
+		System.out.println(tim); // Student(Tim)
+	}
+}
+```
+
+# Inner Classes
+
+A class within a class
+**OuterClass.java**
+
+```java
+public class OuterClass{
+	%%private%% public class InnerClass { //change to public
+		public void display() { // method within innerclass
+			System.out.println("This is an inner class");
+		}
+	}
+
+	public void inner() {
+		InnerClass inner = new InnerClass();
+		inner.display();
+	}
+}
+```
+
+**Main.java**
+
+```java
+public class Main {
+	public static void main(String[] args){
+		OuterClass out = new OuterClass();
+		//out.inner(); // "This is an inner class"
+		OuterCLass.InnerClass in = out.new InnerClass();
+
+		in.display(); // "This is an inner class"
+
+	}
+}
+```
+
+## Create InnerClass within a method
+
+**OuterClass.java**
+
+```java
+public class OuterClass{
+	public void inner() {
+		class InnerClass {
+			public void display() {
+				System.out.println("Inner Class");
+			}
+		}
+
+		InnerClass inner = new InnerClass();
+		inner.display();
+	}
+}
+```
+
+**Main.java**
+
+```java
+public class Main {
+	public static void main(String[] args){
+		OuterClass out = new OuterClass();
+		out.inner(); // "Inner Class"
+
+	}
+}
+```
+
+# Interfaces
+
+Unique to java and they are similar to class, but a different way to abstract [[Background - Abstract Classes]]
+
+**Final**
+Final is used to apply restrictions on class, method, and variable. The final class can't be inherited, final method can't be overridden, and final variable value can't be changed. Final is a keyword
+
+**Vehicle.java**
+
+```java
+public interface Vehicle { // interface are abstract, they will be inherited from
+
+	final int gears = 5; // makes them non-changeable (impossible to inherit or override)
+
+	void speedUp(int a); // this defines the method to exist, but no use yet
+	void slowDown(int a);
+	void changeGear(int a);
+
+// we can make a method that can work for the Car class
+	default void out() {
+		System.out.println("Default Method");
+
+	}
+
+// static method in interface
+	static int math(int b){
+		return b + 9;
+	}
+
+}
+```
+
+**Car.java**
+
+```java
+public class Car implements Vehicle{
+	private int gear = 1;
+	private int speed = 0;
+
+	public void changeGear(int gear) {
+		this.gear = gear;
+	}
+
+	public void speedUp(int change) {
+		this.speed += change;
+	}
+
+	public void slowDown(int change) {
+		this.speed -= change;
+	}
+
+	public void display() {
+		System.out.println("I am a car, " + this.speed + "km/h and I am in gear " + this.gear);
+		out();
+	}
+}
+```
+
+**Main.java**
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Car ford = new Car();
+		ford.speeadUp(10);
+		ford.changeGear(2);
+		ford.display(); // I am a car, going 10km/h and I am in gear 2
+			// with out(), it will print Default Method
+
+// ----------------------------------------------------
+
+		int x = Vehical.math(5);
+		System.out.println(x); // 14
+	}
+}
+```
+
+You can have a separate class called "Math" to house all of your methods for math equations - Math.squareRoot()...
+
+# Enums
+
+A collection of **constants** to help with code being readable...
+An `enum` is a special "class" that represents a group of **constants** (unchangeable variables, like `final` variables).
+
+To create an `enum`, use the `enum` keyword (instead of class or interface), and separate the constants with a comma. Note that they should be in uppercase letters:
+
+### Example
+
+```java
+enum Level {
+  LOW,
+  MEDIUM,
+  HIGH
+}
+```
+
+You can access `enum` constants with the **dot** syntax:
+Level myVar = Level.MEDIUM;
+
+**Level.java**
+
+```java
+public enum Level {
+	HIGH(3), // defining  enum with a value
+	MEDIUM(2),
+	LOW(1);
+
+	private int lvlNum; // private variable for the enum
+
+// method to assign enum
+	private Level(int num) {
+		this.lvlnum = num;
+	}
+
+// method for returning variable
+	public int getLvl() {
+		return this.lvlNum;
+	}
+
+// public method to set num to lvlNum
+	public void setLvl(int num) {
+		return this.lvlNum = num;
+	}
+}
+```
+
+**Main.java**
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Level lvl = Level.LOW;
+		String en = lvl.toString(); // converts into a string
+		Level[] arr = Level.values();
+
+// print enum in a for loop
+		for(Level e : arr) {
+			System.out.println(e); // print out LOW, MEDIUM, HIGH
+		}
+		System.out.println(Level.values()); // prints out the memory
+
+// enum is if statements
+		if(lvl == Level.LOW) {
+			System.out.println(lvl); // LOW
+		}else if (lvl == Level.MEDIUM){
+			System.out.println(lvl);
+		}else {
+			System.out.println(lvl);
+		}
+
+//--------------------------------------------------------------------------------
+
+		Level lvl = Level.LOW;
+		System.out.println(lvl.getLvl()); // 1
+		System.out.println(Level.valueOf("LOW")); // LOW
+
+		lvl.setLvl(5);
+		System.out.println(lvl.getLvl()); // 5
+
+	}
+}
+```
